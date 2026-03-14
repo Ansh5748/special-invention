@@ -119,7 +119,9 @@ const Scene = () => {
             interpolation.y,
             THREE.MathUtils.lerp
           );
-          light.setPointLight(screenLight);
+          if (screenLight instanceof THREE.Mesh) {
+            light.setPointLight(screenLight);
+          }
         }
         const delta = clock.getDelta();
         if (mixer) {

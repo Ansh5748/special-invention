@@ -36,28 +36,29 @@ export function setCharTimeline(
       invalidateOnRefresh: true,
     },
   });
-  let screenLight: THREE.Object3D<THREE.Object3DEventMap> | undefined;
-  let monitor: THREE.Object3D<THREE.Object3DEventMap> | undefined;
-  character?.children.forEach((object: THREE.Object3D<THREE.Object3DEventMap>) => {
+  let screenLight: THREE.Mesh | undefined;
+  let monitor: THREE.Mesh | undefined;
+  character?.children.forEach((object: THREE.Object3D) => {
     if (object.name === "Plane004") {
-      object.children.forEach((child: THREE.Object3D<THREE.Object3DEventMap>) => {
-        if ((child as THREE.Mesh).material) {
-          const mat = (child as THREE.Mesh).material;
-          if (!Array.isArray(mat)) mat.transparent = true;
-          child.material.opacity = 0;
-        }
-        if (child.material.name === "Material.018") {
-          monitor = child;
-          child.material.color.set("#FFFFFF");
+      object.children.forEach((child: THREE.Object3D) => {
+        if (child instanceof THREE.Mesh && child.material) {
+          const mat = child.material as THREE.MeshStandardMaterial;
+          mat.transparent = true;
+          mat.opacity = 0;
+          if (mat.name === "Material.018") {
+            monitor = child;
+            mat.color.set("#FFFFFF");
+          }
         }
       });
     }
-    if (object.name === "screenlight") {
+    if (object.name === "screenlight" && object instanceof THREE.Mesh) {
       if (object.material) {
-        object.material.transparent = true;
-        object.material.opacity = 0;
-        object.material.emissive.set("#B0F5EA");
-        gsap.timeline({ repeat: -1, repeatRefresh: true }).to(object.material, {
+        const mat = object.material as THREE.MeshStandardMaterial;
+        mat.transparent = true;
+        mat.opacity = 0;
+        mat.emissive.set("#B0F5EA");
+        gsap.timeline({ repeat: -1, repeatRefresh: true }).to(mat, {
           emissiveIntensity: () => intensity * 8,
           duration: () => Math.random() * 0.6,
           delay: () => Math.random() * 0.1,
@@ -100,12 +101,12 @@ export function setCharTimeline(
         tl2.to(neckBone.rotation, { x: 0.6, delay: 2, duration: 3 }, 0);
       }
       
-      if (monitor && (monitor as THREE.Mesh).material) {
-        tl2.to((monitor as THREE.Mesh).material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
+      if (monitor && monitor.material) {
+        tl2.to(monitor.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0);
       }
       
-      if (screenLight && (screenLight as THREE.Mesh).material) {
-        tl2.to((screenLight as THREE.Mesh).material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
+      if (screenLight && screenLight.material) {
+        tl2.to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0);
       }
       
       tl2.fromTo(
