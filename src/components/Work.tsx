@@ -5,16 +5,16 @@ import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
 const projects = [ 
   {
-    title: "Thelabellife",
-    category: "E-Commerce",
-    tools: "React, Node.js, CSS, CMS, Javascript",
-    image: "/images/tll.png",
-  },
-  {
     title: "DishLook",
     category: "AR Menu System for Restaurants and Cafe's",
     tools: "Python, AR.js, React, Node.js",
     image: "/images/dishlook.png",
+  },
+  {
+    title: "Thelabellife",
+    category: "E-Commerce",
+    tools: "React, Node.js, CSS, CMS, Javascript",
+    image: "/images/tll.png",
   },
   {
     title: "Veridict",
